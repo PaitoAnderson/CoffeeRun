@@ -26,10 +26,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <head>
         <meta charset="utf-8">
         <title>Coffee Run?</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="author" content="Paito Anderson">
-        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
-        <link href="css/flat-ui.css" rel="stylesheet" type="text/css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/flat-ui.min.css">
         <!--[if lt IE 9]>
       		<script src="js/html5shiv.js"></script>
       		<script src="js/respond.min.js"></script>
@@ -58,9 +59,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		.container .text-muted {
 			margin: 20px 0;
 		}
-		.green {
-			color: #16a085;
-		}
         </style>
     </head>
 	<body>
@@ -80,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				if($dbConnection->field_count){
 					echo "<table class=\"table table-striped\"><tr><th>Name</th><th colspan=2>Coffee Order</th></tr>";
 					while ($row = $orders->fetch_assoc()) {
-						echo "<tr><td>" . $row["OrderName"] . "</td><td colspan=2>" . $row["OrderDesc"] . "</td></tr>";
+						echo "<tr><td>" . htmlspecialchars($row["OrderName"]) . "</td><td colspan=2>" . htmlspecialchars($row["OrderDesc"]) . "</td></tr>";
 					}
 					echo "</table>";
 				}
@@ -151,14 +149,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		<div id="footer">
             <div class="container">
                 <p class="text-muted">
-                    Built with <span class="glyphicon glyphicon-heart"></span> by <a href="http://paitoanderson.com">Paito Anderson</a><!--for <a href="https://sylectus.com/sylectus/">Work</a>-->.
+                    Built with <span class="glyphicon glyphicon-heart"></span> by <a href="http://paitoanderson.com">Paito Anderson</a>.
                 </p>
             </div>
         </div>
 
-		<script src="js/jquery.min.js" type="text/javascript"></script>
-        <script src="js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="js/bootstrap-confirm-button.js" type="text/javascript"></script>
+		<script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/bootstrap-confirm-button.js"></script>
 
         <script type="text/javascript">
         	$('.btn-delete-item').confirmButton({msg:"I'm sure!"}, function(e) {
