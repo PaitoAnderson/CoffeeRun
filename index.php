@@ -9,6 +9,10 @@ define("DB_NAME", "xxxxx");
 $dbConnection = new mysqli(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+	if (strlen($_POST["othername"]) > 0) {
+		die("You're a bot!");		
+	}
+
 	if ($_POST["action"] == "order") {
 		$newOrder = $dbConnection->prepare("INSERT INTO coffee_orders(OrderName, OrderDesc) VALUES (?, ?);");
 		$newOrder->bind_param("ss", $_POST['fullname'], $_POST['order']);
@@ -66,9 +70,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="page-header">
                 <h1>Coffee Run?</h1>
             </div>
-            <!--<a data-toggle="modal" href="#CoffeeRun" class="btn btn-primary">I am Going!</a>-->
-            <a data-toggle="modal" href="#CoffeeOrder" class="btn btn-primary">I want a Coffee!</a>
-            <a href="#" class="btn btn-primary btn-delete-item">Clear Orders</a>
+            <!--<a class="btn btn-primary" data-toggle="modal" href="#CoffeeRun">I am Going!</a>-->
+            <a class="btn btn-primary" data-toggle="modal" href="#CoffeeOrder" >I want a Coffee!</a>
+            <a class="btn btn-primary btn-delete-item" href="#">Clear Orders</a>
         	
         	<br /><br />
 			
@@ -88,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div><!-- /.container -->
 
         <form id="ClearCoffees" action"#" method="post">
-        	<input type="hidden" name="action" value="clear">
+        	<input name="action" type="hidden" value="clear">
         </form>
 
 		<!-- Modal -->
@@ -97,26 +101,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				<div class="modal-content">
 					<form action="#" method="post">
 						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<button class="close" data-dismiss="modal" type="button" aria-hidden="true">&times;</button>
 							<h4 class="modal-title">I am Going!</h4>
 						</div>
 						<div class="modal-body">
-							<input type="hidden" name="action" value="run" />
+							<input name="action" type="hidden" value="run" />
 							<input type="text" class="form-control" placeholder="Your Name" name="fullname" id="fullname" required="required" /><br />
-							<select name="CoffeeHouse" id="CoffeeHouse" class="form-control">
+							<select class="form-control" id="CoffeeHouse" name="CoffeeHouse">
 								<option value="TimHortons">Tim Hortons</option>
 								<option value="Starbucks">Starbucks</option>
 								<option value="SecondCup">Second Cup</option>
 							</select><br />
-							<select name="InMintes" id="InMintes" class="form-control">
+							<select class="form-control" id="InMintes" name="InMintes">
 								<option value="5">5 Minutes</option>
 								<option value="10">10 Minutes</option>
 								<option value="15">15 Minutes</option>
 							</select>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-							<button type="submit" class="btn btn-primary">Save</button>
+							<button class="btn btn-default" data-dismiss="modal" type="button">Cancel</button>
+							<button class="btn btn-primary" type="submit">Save</button>
 						</div>
 					</form>
 				</div><!-- /.modal-content -->
@@ -129,17 +133,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				<div class="modal-content">
 					<form action="#" method="post">
 						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<button class="close" data-dismiss="modal" type="button" aria-hidden="true">&times;</button>
 							<h4 class="modal-title">I want a Coffee!</h4>
 						</div>
 						<div class="modal-body">
-							<input type="hidden" name="action" value="order" />
-							<input type="text" class="form-control" placeholder="Your Name" name="fullname" id="fullname" required="required" /><br />
-							<textarea cols="45" class="form-control" rows="3" placeholder="Your Order" name="order" id="order" required="required"></textarea><br />
+							<input name="action" type="hidden" value="order" />
+							<input id="othername" name="othername" type="text" />
+							<input class="form-control" id="fullname" name="fullname" type="text" placeholder="Your Name" required="required" /><br />
+							<textarea class="form-control" id="order" name="order" cols="45" rows="3" placeholder="Your Order" required="required"></textarea><br />
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-							<button type="submit" class="btn btn-primary">Save</button>
+							<button class="btn btn-default" data-dismiss="modal" type="button">Cancel</button>
+							<button class="btn btn-primary" type="submit">Save</button>
 						</div>
 					</form>
 				</div><!-- /.modal-content -->
@@ -159,6 +164,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <script src="js/bootstrap-confirm-button.js"></script>
 
         <script type="text/javascript">
+        	$('#othername').hide();
+
         	$('.btn-delete-item').confirmButton({msg:"I'm sure!"}, function(e) {
         		document.getElementById('ClearCoffees').submit();
         	});
